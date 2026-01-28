@@ -1,7 +1,11 @@
+
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: var(--moss-green) var(--bg-dark);
 }
 
 html, body {
@@ -20,7 +24,7 @@ html, body {
     --accent:var(--moss-green);
     /*estados*/
     --hover-glow:rgba(63,95,74,0.4);
-    --border-soft:rgba(63,95,74.0.6);
+    --border-soft:rgba(63,95,74,0.6);
     /*barra de scroll*/
     --scroll-track:var(--bg-dark);
     --scroll-thumb:rgba(46,74,90,0.9);
@@ -39,7 +43,6 @@ body {
         var(--blue-alpine-dark), var(--blue-alpine-mid)
     );
     color: var(--text-light);
-    overflow: hidden; /*supuestamente evita un scroll global*/
 }
 
 /*aqui empieza el contenido general*/
@@ -63,7 +66,7 @@ body {
 /*aqui va la parte del centro, hace scroll, por eso el scroll debe estar centrado arriba*/
 
 .lobby-center{
-    overflow-y: auto;
+    overflow-y: auto; /*el scroll quedo aca porque asi se mueve todo*/
     padding: 4rem 2rem;
     display: flex;
     flex-direction: column;
@@ -73,16 +76,111 @@ body {
 /*aqui nos centramos en los post en si*/
 
 .beat-post{
-    border: 1px solid var(--moss-green);
-    padding: 1rem;
+    border: 1px solid var(--accent);/*si no me llega a gustar el borde, eliminar este de aqui*/
+    padding: 2%;
     max-width: 600px;
     margin: 0 auto;
 }
+
 
 .beat-post img{
     width: 100%;
     height: auto;
     display: block;
+}
+/*Tarjetas con movimiento*/
+
+.beat-card{/*aqui va la tarjeta base*/
+    width: 500px;
+    margin: 0 auto;
+    perspective: 1000px;
+    cursor: pointer;
+
+}
+
+.beat-card-inner{/*aqui va lo visual*/
+ position: relative;
+ width: 100%;
+ height: 500px;
+ /*overflow: hidden;*/
+ transform-style: preserve-3d;
+ transition: transform 0.8s ease;
+ border: 1px solid var(--border-soft);
+ border-radius: 8px;
+ background-color: var(--bg-panel);
+
+}
+
+.beat-card-front,.beat-card-back{
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 6px;
+    
+}
+
+.beat-card-front{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.beat-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    padding: 0.50rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+    background: linear-gradient(to top,rgba(11, 18, 32, 0.85),rgba(11,18,32,0) ) ;
+}
+
+.beat-card-front img{/*imagen del frente*/
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 2;
+    background-color: var(--bg-panel);
+    border: 1px solid var(--accent);
+
+}
+
+.beat-card-back{
+    background-color: var(--bg-panel);
+    transform: rotateY(180deg);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+    color: var(--text-light);
+    background: linear-gradient(to top,rgba(11, 18, 32, 0.85),rgba(11,18,32,0) ) ;
+}
+
+.beat-card:hover .beat-card-inner{
+    transform: rotateY(180deg);
+    border-color: var(--accent);
+    box-shadow: 0 0 12px rgba(95, 124, 106, 0.4), 0 0 30px rgba(95,124,106,0.25);
+}
+
+/*dos modificadores del texto bajo imagen*/
+
+.beat-info{
+    text-align: center;
+}
+
+.beat-title {
+    font-size: 0.9rem;
+    letter-spacing: 0.12em;
+    color: var(--text-light);
+    text-transform: uppercase;
+    margin-top: 0.5rem;
 }
 
 /*aqui va el menu de la derecha*/
@@ -132,9 +230,12 @@ body {
     background-color: var(--accent);
 }
 
-/*firefox todo especial, todo solo*/
-
-*{
-    scrollbar-width: thin;
-    scrollbar-color: var(--moss-green) var(--bg-dark);
+@media(max-width:600px){
+    .beat-card{
+        width: 90vw;
+    }
+    .beat-card-inner{
+        height: 90vw;
+    }
 }
+
